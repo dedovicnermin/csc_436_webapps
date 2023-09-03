@@ -29,9 +29,6 @@ const Homework1 = class Homework1 {
 }
 
 /**
- * *****************
- * ***** TODO ******
- * *****************
  * 
  * Implement the Circle class below. It needs to have a radius(Number) property and a color(String) properties. Both properties should be set in a constructor
  * Additionally, the Circle class should have a method called `calcArea` which will return the area (radius*radius*pi) of the circle. 
@@ -42,13 +39,19 @@ const Homework1 = class Homework1 {
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math
  */
 
-const Circle = class Circle { }
+const Circle = class Circle {
+    constructor(radius, color) {
+        this.radius = radius;
+        this.color = color;
+    }
+
+    calcArea() {
+        return this.radius * this.radius * Math.PI;
+    }
+}
 
 
 /**
- * *****************
- * ***** TODO ******
- * *****************
  * 
  * Implement the Student class below. 
  * 
@@ -63,7 +66,17 @@ const Circle = class Circle { }
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes
  */
 
-const Student = class Student { }
+const Student = class Student {
+    constructor(firstName, lastName, gpa, degreeType) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gpa = gpa;
+        this.degreeType = degreeType;
+        this.grade = undefined;
+        this.graduated = false;
+    }
+
+}
 
 
 /**
@@ -80,6 +93,15 @@ const Student = class Student { }
  */
 
 const Product = class Product {
+    static IN_STOCK = "In Stock";
+    static OUT_OF_STOCK = "Out of Stock";
+
+    constructor(csvData) {
+        const data = csvData.split(",");
+        this.name = data[0];
+        this.price = Number(data[1]);
+        this.availability = data[2];
+    }
 
     /**
      * *****************
@@ -92,13 +114,12 @@ const Product = class Product {
      * This can be implmeneted in one line.
      * Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array 
      */
-    static inStock = (products) => {}
+    static inStock = (products) => {
+        return products.filter(p => p.availability === this.IN_STOCK )
+    }
 
 
     /**
-     * *****************
-     * ***** TODO ******
-     * *****************
      * 
      * Implement the static method halfOff below 
      * 
@@ -106,7 +127,9 @@ const Product = class Product {
      * This method can also be written in one line; if doing so, consider using String interpolation when calling the product constructor
      * Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array 
      */
-    static halfOff = (products) => {}
+    static halfOff = (products) => {
+        return products.map(p => new Product(`${p.name},${p.price * 0.5},${p.availability}`));
+    }
 
     /**
      * *****************
@@ -121,7 +144,9 @@ const Product = class Product {
      * Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array 
      * Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat (currency formatting)
      */
-    static printProducts = (products) => {}
+    static printProducts = (products) => {
+        products.forEach(p => console.log(`Product: ${p.name}, Cost: \$${Number(p.price).toFixed(2)}, Availability: ${p.availability === this.IN_STOCK ? "Yes" : "No"}`))
+    }
 
  };
 
