@@ -80,9 +80,6 @@ const Student = class Student {
 
 
 /**
- * *****************
- * ***** TODO ******
- * *****************
  * 
  * Implement the Product class below. 
  * 
@@ -104,9 +101,6 @@ const Product = class Product {
     }
 
     /**
-     * *****************
-     * ***** TODO ******
-     * *****************
      * 
      * Implement the static method inStock below 
      * 
@@ -128,13 +122,12 @@ const Product = class Product {
      * Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array 
      */
     static halfOff = (products) => {
-        return products.map(p => new Product(`${p.name},${p.price * 0.5},${p.availability}`));
+        return products.map(
+            p => new Product(`${p.name},${p.price * 0.5},${p.availability}`)
+        );
     }
 
     /**
-     * *****************
-     * ***** TODO ******
-     * *****************
      * 
      * Implement the static method printProducts below 
      * 
@@ -145,7 +138,9 @@ const Product = class Product {
      * Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat (currency formatting)
      */
     static printProducts = (products) => {
-        products.forEach(p => console.log(`Product: ${p.name}, Cost: \$${Number(p.price).toFixed(2)}, Availability: ${p.availability === this.IN_STOCK ? "Yes" : "No"}`))
+        products.forEach(
+            p => console.log(`Product: ${p.name}, Cost: \$${Number(p.price).toFixed(2)}, Availability: ${p.availability === this.IN_STOCK ? "Yes" : "No"}`)
+        )
     }
 
  };
