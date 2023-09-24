@@ -1,0 +1,29 @@
+
+
+body {
+  background-color: gray;
+  color: gray;
+}
+
+
+
+.todo-list {
+  background-color: greenyellow;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.todo-list_create-todo {
+  background-color: gray;
+}
+
+.todo-list_todos {
+  background-color: green;
+}
+
+.todo-list_todos_item {
+
+}
+

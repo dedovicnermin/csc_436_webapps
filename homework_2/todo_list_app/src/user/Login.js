@@ -1,0 +1,26 @@
+import {useState} from "react";
+import {Container} from "react-bootstrap";
+
+export default function Login({setUser}) {
+    const [username, setUserName] = useState("");
+
+    function handleUserName(event) {
+        setUserName(event.target.value);
+    }
+
+    return (
+        <Container>
+            <form onSubmit={e => {
+                e.preventDefault();
+                setUser(username)
+            }}>
+                <label htmlFor="login-username">Username:</label>
+                <input type="text" value={username} onChange={handleUserName} name="login-username"
+                       id="login-username"/>
+                <label htmlFor="login-password">Password:</label>
+                <input type="password" name="login-password" id="login-password"/>
+                <input type="submit" value="Login" disabled={username.length === 0}/>
+            </form>
+        </Container>
+    );
+}

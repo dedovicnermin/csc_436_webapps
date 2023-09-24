@@ -1,6 +1,11 @@
 .idea
 **/node_modules
+playground
+homework_1/README.pdf
+inclass-examples
 
+
+**/*.pdf
 ### Node template
 # Logs
 logs
