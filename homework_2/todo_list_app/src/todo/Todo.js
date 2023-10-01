@@ -1,13 +1,17 @@
 import {useState} from "react";
 import {Container} from "react-bootstrap";
 
-export default function Todo({title, description, author, dateCreated}) {
+export default function Todo({title, description, author, dateCreated, setTodos}) {
     const [completed, setCompleted] = useState(false);
     const [dateCompleted, setDateCompleted] = useState("");
 
     function handleCompletedChange(event) {
-        setCompleted(Boolean(event.target.value));
-        setDateCompleted(new Date(Date.now()).toLocaleDateString());
+        setCompleted(prevState => !prevState);
+        if (!completed === true) {
+            setDateCompleted(new Date(Date.now()).toLocaleDateString());
+        } else {
+            setDateCompleted("")
+        }
     }
 
     return (
@@ -28,8 +32,14 @@ export default function Todo({title, description, author, dateCreated}) {
                 <input type="checkbox" value={completed} onChange={handleCompletedChange}
                        name="todo-complete"
                        id="todo-complete"/>
-                {dateCompleted && <i>Complete date: {dateCompleted}</i>}
             </Container>
+            {
+                dateCompleted &&
+                <Container>
+                    <i>Complete date: {dateCompleted}</i>
+                </Container>
+
+            }
         </Container>
     )
 }

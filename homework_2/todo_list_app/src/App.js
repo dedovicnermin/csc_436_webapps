@@ -49,7 +49,7 @@ function App() {
               <Container className="new_user_wrapper">
                   <Login setUser={setUser}/>
                   <Register setUser={setUser}/>
-                  <Counter />
+                  {/*<Counter />*/}
               </Container>
           }
           {

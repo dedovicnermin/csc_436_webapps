@@ -15,7 +15,7 @@ export default function TodoList ({user, todos= [], setTodos}) {
                 {
                     todos.map((t,i) => (
                         <Container className="todo-list_todos_item">
-                            <Todo {...t} key={'todo-'+i} />
+                            <Todo {...t} key={'todo-'+i} setTodos={setTodos}/>
                         </Container>
                     ))
                 }

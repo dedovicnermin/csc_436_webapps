@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Container} from "react-bootstrap";
+import {Button, Container, Form} from "react-bootstrap";
 
 export default function Login({setUser}) {
     const [username, setUserName] = useState("");
@@ -10,24 +10,20 @@ export default function Login({setUser}) {
 
     return (
         <Container className="login_wrapper">
-            <form onSubmit={e => {
-                e.preventDefault();
-                setUser(username)
-            }}>
-                <Container>
-                    <label htmlFor="login-username">Username:</label>
-                    <input type="text" value={username} onChange={handleUserName} name="login-username"
-                       id="login-username"/>
-                </Container>
-                <Container>
-                    <label htmlFor="login-password">Password:</label>
-                    <input type="password" name="login-password" id="login-password"/>
-                </Container>
-                <Container>
-                    <input type="submit" value="Login" disabled={username.length === 0}/>
-                </Container>
-
-            </form>
+            <h2>Login</h2>
+            <Form onSubmit={ e => {e.preventDefault(); setUser(username)}}>
+                <Form.Group className="mb-3" controlId="login-username">
+                    <Form.Label>Username: </Form.Label>
+                    <Form.Control placeholder="Enter username" value={username} onChange={handleUserName}/>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="login-password">
+                    <Form.Label>Password: </Form.Label>
+                    <Form.Control type="password" placeholder="Enter password"/>
+                </Form.Group>
+                <Button variant="primary" type="submit" disabled={!username}>
+                    Login
+                </Button>
+            </Form>
         </Container>
     );
 }

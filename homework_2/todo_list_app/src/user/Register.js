@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Button, Container} from "react-bootstrap";
+import {Button, Container, Form} from "react-bootstrap";
 
 export default function Register({setUser}) {
 
@@ -11,40 +11,42 @@ export default function Register({setUser}) {
 
     return (
         <Container className="register_wrapper">
-            <form onSubmit={event => {
-                event.preventDefault();
-                setUser(formData.username)
-            }}>
-                <Container>
-                    <label htmlFor="register-username">Username:</label>
-                    <input type="text"
-                           value={formData.username}
-                           onChange={event => setFormData({...formData, username: event.target.value})}
-                           name="register-username"
-                           id="register-username"
+            <h2>Register</h2>
+            <Form onSubmit={event => {event.preventDefault();setUser(formData.username)}}>
+                <Form.Group className="mb-3" controlId="register-username">
+                    <Form.Label>Username: </Form.Label>
+                    <Form.Control
+                        placeholder="Enter username"
+                        type="text"
+                        value={formData.username}
+                        onChange={event => setFormData({...formData, username: event.target.value})}
                     />
-                </Container>
-                <Container>
-                    <label htmlFor="register-password">Password:</label>
-                    <input type="password"
-                           value={formData.password}
-                           onChange={event => setFormData({...formData, password: event.target.value})}
-                           name="register-password"
-                           id="register-password"/>
-                </Container>
-                <Container>
-                    <label htmlFor="register-password-repeat">Repeat password:</label>
-                    <input type="password"
-                           value={formData.passwordRepeat}
-                           onChange={event => setFormData({...formData, passwordRepeat: event.target.value})}
-                           disabled={formData.username.length === 0 || formData.password.length === 0 || formData.passwordRepeat !== formData.passwordRepeat}
-                           name="register-password-repeat"
-                           id="register-password-repeat"/>
-                </Container>
-                <Container>
-                    <Button as="input" type="submit" value="Register"/>
-                </Container>
-            </form>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="register-password">
+                    <Form.Label>Password: </Form.Label>
+                    <Form.Control
+                        type="password"
+                        placeholder="Enter password"
+                        value={formData.password}
+                        onChange={event => setFormData({...formData, password: event.target.value})}
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="register-password-repeat">
+                    <Form.Label>Repeat Password: </Form.Label>
+                    <Form.Control
+                        type="password"
+                        placeholder="Repeat password"
+                        value={formData.passwordRepeat}
+                        onChange={event => setFormData({...formData, passwordRepeat: event.target.value})}
+                    />
+                </Form.Group>
+                <Button
+                    variant="primary" type="submit"
+                    disabled={formData.password !== formData.passwordRepeat || !formData.password || !formData.username}
+                >
+                    Register
+                </Button>
+            </Form>
         </Container>
     );
 }
