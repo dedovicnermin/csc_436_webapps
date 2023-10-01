@@ -1,6 +1,4 @@
-import Login from './Login';
 import Logout from './Logout';
-import Register from "./Register";
 import {Container, Navbar} from "react-bootstrap";
 
 export default function UserBar({user, setUser}) {
@@ -27,10 +25,7 @@ export default function UserBar({user, setUser}) {
                     <Container>
                         <Navbar.Brand>TODO App</Navbar.Brand>
                         <Navbar.Toggle/>
-                        <Login setUser={setUser}/>
-                        <Register setUser={setUser}/>
                     </Container>
-
                 </Navbar>
             </>
         );
