@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {Button, Container} from "react-bootstrap";
+import {Button, Form} from "react-bootstrap";
 import {TODO_EVENTS} from "../AppReducer";
 /**
  * Renders a form accepting title and description for a new Todo item
@@ -7,6 +7,7 @@ import {TODO_EVENTS} from "../AppReducer";
 export default function CreateTodo({user, dispatch}) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const isDisabled = !title || !description;
     const localDateString = () => new Date(Date.now()).toLocaleDateString();
     const createTodo = () => {
         return {
@@ -22,7 +23,8 @@ export default function CreateTodo({user, dispatch}) {
 
     function handleTitle(event) {setTitle(event.target.value);}
     function handleDescription(event) {setDescription(event.target.value);}
-    function handleCreate() {
+    function handleCreate(event) {
+        event.preventDefault();
         dispatch({
             type: TODO_EVENTS.CREATE_TODO,
             payload: createTodo()
@@ -32,21 +34,25 @@ export default function CreateTodo({user, dispatch}) {
 
 
     return (
-        <form onSubmit={event => {
-            event.preventDefault();
-            handleCreate();
-        }}>
-            <Container>Author: <b>{user}</b></Container>
-            <Container>
-                <label htmlFor="create-title">Title:</label>
-                <input type="text" value={title} onChange={handleTitle} name="create-title" id="create-title"/>
-            </Container>
-            <Container>
-                <label>Desc:</label>
-                <textarea value={description} onChange={handleDescription}/>
-            </Container>
+        <Form onSubmit={handleCreate}>
+            <Form.Group className="mb-3" controlId="create-todo-author">
+                <Form.Label>Author: </Form.Label>
+                <Form.Control plaintext readOnly as="text" value={user}>{user}</Form.Control>
+            </Form.Group>
 
-            <Button as="input" type="submit" value="Create"/>
-        </form>
+            <Form.Group className="mb-3" controlId="create-todo-title">
+                <Form.Label>Title: </Form.Label>
+                <Form.Control type="text" placeholder="Enter title for TODO" value={title} onChange={handleTitle}/>
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="create-todo-description">
+                <Form.Label>Description: </Form.Label>
+                <Form.Control as="textarea" rows="3" value={description} onChange={handleDescription} placeholder="Enter TODO description"/>
+            </Form.Group>
+
+            <Button variant="primary" type="submit" disabled={isDisabled}>
+                Create
+            </Button>
+        </Form>
     );
 }

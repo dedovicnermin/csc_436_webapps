@@ -3,7 +3,6 @@ import {Container, Navbar} from "react-bootstrap";
 
 export default function UserBar({user, dispatch}) {
     if (user) {
-
         return (
             <Navbar className="bg-body-tertiary">
                 <Container>

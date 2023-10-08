@@ -1,7 +1,8 @@
 import {useState} from "react";
 import {Button, Container, Form} from "react-bootstrap";
+import {USER_EVENTS} from "./../AppReducer.js";
 
-export default function Register({setUser}) {
+export default function Register({dispatch}) {
 
     const [formData, setFormData] = useState({
         username: "",
@@ -12,7 +13,7 @@ export default function Register({setUser}) {
     return (
         <Container className="register_wrapper">
             <h2>Register</h2>
-            <Form onSubmit={event => {event.preventDefault();setUser(formData.username)}}>
+            <Form onSubmit={event => {event.preventDefault();dispatch({type: USER_EVENTS.REGISTER, payload: formData.username})}}>
                 <Form.Group className="mb-3" controlId="register-username">
                     <Form.Label>Username: </Form.Label>
                     <Form.Control
