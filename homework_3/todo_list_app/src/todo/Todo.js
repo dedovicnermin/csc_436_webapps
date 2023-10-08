@@ -1,42 +1,43 @@
-import {useState} from "react";
 import {Container} from "react-bootstrap";
+import {TODO_EVENTS} from "../AppReducer";
 
-export default function Todo({title, description, author, dateCreated, setTodos}) {
-    const [completed, setCompleted] = useState(false);
-    const [dateCompleted, setDateCompleted] = useState("");
+export default function Todo({todo, dispatch}) {
 
-    function handleCompletedChange(event) {
-        setCompleted(prevState => !prevState);
-        if (!completed === true) {
-            setDateCompleted(new Date(Date.now()).toLocaleDateString());
-        } else {
-            setDateCompleted("")
-        }
+    const localDateString = () => new Date(Date.now()).toLocaleDateString();
+    const handleCompletedChange = () => {
+        dispatch({
+            type: TODO_EVENTS.TOGGLE_COMPLETED,
+            payload: {
+                ...todo,
+                completed: !todo.completed,
+                dateCompleted: !todo.completed ? localDateString() : null
+            }
+        })
     }
 
     return (
         <Container className="todo">
             <Container className="todo-header">
-                <h3>{title}</h3>
-                <i>Written by <b>{author}</b></i>
+                <h3>{todo.title}</h3>
+                <i>Written by <b>{todo.author}</b></i>
                 <div>
-                    <span> Create date: {dateCreated} </span>
+                    <span> Create date: {todo.dateCreated} </span>
                 </div>
             </Container>
             <Container className="todo-body">
-                <span>Description: {description}</span>
+                <span>Description: {todo.description}</span>
             </Container>
             <br/>
             <Container className="todo-footer">
                 <label htmlFor="todo-complete">Completed:</label>
-                <input type="checkbox" value={completed} onChange={handleCompletedChange}
+                <input type="checkbox" value={todo.completed} onClick={handleCompletedChange} checked={todo.completed}
                        name="todo-complete"
                        id="todo-complete"/>
             </Container>
             {
-                dateCompleted &&
+                todo.completed &&
                 <Container>
-                    <i>Complete date: {dateCompleted}</i>
+                    <i>Complete date: {todo.dateCompleted}</i>
                 </Container>
 
             }

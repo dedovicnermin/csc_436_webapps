@@ -1,17 +1,20 @@
 import {Button, Container} from "react-bootstrap";
+import {USER_EVENTS} from "../AppReducer";
 
-export default function Logout({user, setUser}) {
+function handleLogout(dispatch) {
+    dispatch({type: USER_EVENTS.LOGOUT});
+}
+
+export default function Logout({user, dispatch}) {
     return (
         <form onSubmit={e => {
             e.preventDefault();
-            setUser("");
+            handleLogout(dispatch);
         }}>
             <Container>
                 {
                     user && <Button as="input" type="submit" value="Logout"/>
                 }
-            {/*Logged in as: <b>{user}</b>*/}
-            {/*<input type="submit" value="Logout"/>*/}
             </Container>
         </form>
     );

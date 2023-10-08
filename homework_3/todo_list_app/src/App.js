@@ -2,58 +2,66 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import {useState} from "react";
+import {useReducer} from "react";
 import UserBar from "./user/UserBar";
 import TodoList from "./todo/TodoList";
 import {Container} from "react-bootstrap";
 import Login from "./user/Login";
 import Register from "./user/Register";
+import appReducer from "./AppReducer";
 
 const initialTodos = [
   {
+      id: "NERM:Clean desk",
       title: "Clean desk",
       description: "Ensure desk is clean.",
       author: "NERM",
       dateCreated: new Date(Date.now()).toLocaleDateString(),
-      complete: false,
-      dateCompleted: "NA"
+      completed: false,
+      dateCompleted: null
   },
   {
+      id: "NERM:Clean bathroom",
       title: "Clean bathroom",
       description: "Ensure bathroom is clean.",
       author: "NERM",
       dateCreated: new Date(Date.now()).toLocaleDateString(),
-      complete: false,
-      dateCompleted: "NA"
+      completed: false,
+      dateCompleted: null
   },
   {
+      id: "NERM:Fix bed",
       title: "Fix bed",
       description: "Ensure bed is fixed.",
       author: "NERM",
       dateCreated: new Date(Date.now()).toLocaleDateString(),
-      complete: false,
-      dateCompleted: "NA"
+      completed: false,
+      dateCompleted: null
   }
 ]
 
+const initialState = {
+    user: "",
+    todos: initialTodos
+}
+
 function App() {
-  const [user, setUser] = useState('');
-  const [todos, setTodos] = useState(initialTodos);
+  const [state, dispatch] = useReducer(appReducer, initialState);
 
   return (
       <Container>
-        <UserBar user={user} setUser={setUser}/>
+        <UserBar user={state.user} dispatch={dispatch}/>
           {
-              !user &&
+              !state.user &&
               <Container className="new_user_wrapper">
-                  <Login setUser={setUser}/>
-                  <Register setUser={setUser}/>
+                  <Login dispatch={dispatch}/>
+                  <Register dispatch={dispatch}/>
                   {/*<Counter />*/}
               </Container>
           }
           {
-              user &&
-              <TodoList user={user} todos={todos} setTodos={setTodos} />
+              state.user &&
+              <TodoList user={state.user} todos={state.todos} dispatch={dispatch} />
           }
       </Container>
   )
