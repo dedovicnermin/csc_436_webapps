@@ -1,0 +1,58 @@
+
+
+body {
+  background-color: gray;
+  color: gray;
+}
+
+
+
+.todo-list {
+  background-color: greenyellow;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.todo-list_create-todo {
+  background-color: gray;
+}
+
+.todo-list_todos {
+  background-color: green;
+}
+
+.todo-list_todos_item {
+
+}
+
+.todo {
+  display: flex;
+}
+
+.todo_right {
+  display: flex;
+  justify-content: center;
+
+}
+
+.new_user_wrapper {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+}
+
+.login_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.register_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+

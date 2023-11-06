@@ -1,0 +1,75 @@
+{
+  "users": [
+    {
+      "email": "ndedovic@depaul.edu",
+      "password": "$2a$10$aT8mB/MG8ZG3/M4CyEO.zeCotk5jKvBUeKaotMB7g8k9TDb12G1BK",
+      "id": 1
+    },
+    {
+      "email": "nerm@email.com",
+      "password": "$2a$10$NZkGE2DWD9GrXDjdT7MyZu5JEIW8il/WOIpBRH55t8lurYiQ7xqYq",
+      "id": 2
+    },
+    {
+      "email": "user3@email.com",
+      "password": "$2a$10$X5IKO4oLngr/1Ms94Yx2ZO2tu/PQ6HAvnmAdTAcre3JNDOhopM4m2",
+      "id": 3
+    }
+  ],
+  "todos": [
+    {
+      "id": 1,
+      "title": "Clean desk",
+      "description": "Ensure desk is clean.",
+      "author": "NERM",
+      "dateCreated": "05/05/2023",
+      "completed": false,
+      "dateCompleted": null
+    },
+    {
+      "id": 2,
+      "title": "Clean bathroom",
+      "description": "Ensure bathroom is clean.",
+      "author": "NERM",
+      "dateCreated": "05/05/2023",
+      "completed": false,
+      "dateCompleted": null
+    },
+    {
+      "id": 4,
+      "title": "Fix UI",
+      "description": "Ensure UI is fixed.",
+      "author": "NERM",
+      "dateCreated": "05/05/2023",
+      "completed": false,
+      "dateCompleted": null
+    },
+    {
+      "id": 5,
+      "title": "scrum",
+      "description": "testing",
+      "author": "nerm@email.com",
+      "dateCreated": "11/5/2023",
+      "completed": false,
+      "dateCompleted": null
+    },
+    {
+      "id": 6,
+      "title": "Finish hw",
+      "description": "asfdasdfasdfasdfasdfasdfasdf sadfasdfasdf sadf asdf asd ",
+      "author": "nerm@email.com",
+      "dateCreated": "11/5/2023",
+      "completed": true,
+      "dateCompleted": "11/5/2023"
+    },
+    {
+      "title": "test item ",
+      "description": "this is yet another test todo\n",
+      "author": "nerm@email.com",
+      "dateCreated": "11/5/2023",
+      "completed": false,
+      "dateCompleted": null,
+      "id": 7
+    }
+  ]
+}
