@@ -67,7 +67,6 @@ router.use(function(req, res, next) {
 });
 
 router.post("/register", async function (req, res, next) {
-    console.log(JSON.stringify(req.body))
     if (req.body.email && req.body.password && req.body.passwordConfirmation) {
         if (req.body.password === req.body.passwordConfirmation) {
             const user = new User({
@@ -77,7 +76,6 @@ router.post("/register", async function (req, res, next) {
             return await user
                 .save()
                 .then((savedUser) => {
-                    console.log(JSON.stringify(savedUser));
                     return res.status(201).json({
                         id: savedUser._id,
                         email: savedUser.email,
@@ -101,7 +99,6 @@ router.post("/login", async function (req, res, next) {
             .equals(req.body.email)
             .exec();
         if (user) {
-            console.log(JSON.stringify(user))
             return bcrypt
                 .compare(req.body.password, user.password)
                 .then((result) => {

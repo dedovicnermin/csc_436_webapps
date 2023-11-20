@@ -112,8 +112,12 @@ router.get("/", async function (req, resp, next) {
         .where("author").equals(req.payload.id)
         .then(
             (todos) => {
-                console.log("RETURN : GET_TODOS : " + JSON.stringify(todos));
-                return resp.status(200).json(todos);
+                console.log("RETURN : GET_TODOS : " + JSON.stringify(todos.map((todo) => {
+                    return {id: todo._id, title: todo.title, description: todo.description, author: todo.author, dateCreated: todo.dateCreated, completed: todo.completed, dateCompleted: todo.dateCompleted}
+                })));
+                return resp.status(200).json(todos.map((todo) => {
+                    return {id: todo._id, title: todo.title, description: todo.description, author: todo.author, dateCreated: todo.dateCreated, completed: todo.completed, dateCompleted: todo.dateCompleted}
+                }));
             }
         )
         .catch(
@@ -164,13 +168,5 @@ router.put("/:id", async function (req, resp) {
        );
 });
 
-
-// router.get("/", async function (req, res, next) {
-//     const todos = await Todo
-//         .find()
-//         .where("author").equals(req.payload.id)
-//         .exec();
-//     return res.status(200).json({ posts: todos });
-// });
 
 module.exports = router;
