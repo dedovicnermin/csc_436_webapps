@@ -32,7 +32,6 @@ export default function CreateTodo() {
     const isDisabled = !title || !description;
     const localDateString = () => new Date(Date.now()).toLocaleDateString();
     const createTodo = () => {
-        console.log(JSON.stringify(user))
         return {
             title: title,
             description: description,

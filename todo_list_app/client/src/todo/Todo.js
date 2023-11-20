@@ -43,7 +43,6 @@ export default function Todo({todo, dispatch}) {
             completed: !todo.completed,
             dateCompleted: !todo.completed ? localDateString() : null
         };
-        console.log("handleCompletedChange() : STATUS_OF_TODO : %s", JSON.stringify(todo));
         updateTodo({...update});
         dispatch({
             type: TODO_EVENTS.TOGGLE_COMPLETED,
@@ -54,7 +53,6 @@ export default function Todo({todo, dispatch}) {
     }
     const handleDelete = event => {
         event.preventDefault()
-        console.log("handleDelete() : todo - (%s) - before backend persistence", todo);
         deleteTodo({...todo})
         dispatch({
             type: TODO_EVENTS.DELETE_TODO,

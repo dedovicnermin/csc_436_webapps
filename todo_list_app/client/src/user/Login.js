@@ -19,7 +19,6 @@ export default function Login() {
 
     useEffect(() => {
         if (user && user.isLoading === false && (user.data || user.error)) {
-            console.log(JSON.stringify(user.data))
             if (user.error) {
                 setLoginFailed(true);
             } else {

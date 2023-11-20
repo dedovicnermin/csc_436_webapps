@@ -20,36 +20,19 @@ export default function Register({dispatchUser}) {
 
     useEffect(() => {
         if (user && user.isLoading === false && (user.data || user.error)) {
-            console.log("Register.js user.data: " + user.data)
             if (user.error) {
-                console.log("Register.js error with registration: " + user.error)
                 setStatus("Registration failed, please try again later.");
             } else {
-                dispatchUser({
-                    type: USER_EVENTS.REGISTER,
-                    payload: {
-                        email: formData.username,
-                        id: user.data?.id
-                    }
-                })
                 setStatus("Registration successful. You may now login.");
-
             }
         }
     }, [user]);
-
-    // useEffect(() => {
-    //     if (user && user.isLoading) {
-    //         dispatchUser({ type: USER_EVENTS.REGISTER, payload: user.data.user.email });
-    //     }
-    // }, [user, dispatchUser]);
 
 
 
     function handleSubmit(event, user) {
         event.preventDefault();
         register(formData.username, formData.password)
-        // dispatchUser({type: USER_EVENTS.REGISTER, payload:  user})
     }
 
     const handleUsernameChange = event => setFormData({...formData, username: event.target.value});

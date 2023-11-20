@@ -28,9 +28,11 @@ function App() {
 
 
     useEffect(() => {
-        getTodos()
-        console.log(todosResponse)
-    }, [state?.user?.access_token]);
+        if (state.user.access_token && state.user.email) {
+            getTodos()
+        }
+
+    }, [state?.user?.access_token, state?.user?.email]);
 
     useEffect(() => {
         if (todosResponse && todosResponse.data && todosResponse.isLoading === false) {
