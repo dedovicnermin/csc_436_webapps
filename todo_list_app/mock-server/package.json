@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "mock-server",
   "version": "1.0.0",
   "description": "Backend for TODO list app",
   "main": "index.js",
