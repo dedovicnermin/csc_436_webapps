@@ -76,13 +76,14 @@ router.use(function (req, resp, next) {
 
 
 router.post("/", async function (req, res) {
+    console.log(JSON.stringify(req.body));
     const todo = new Todo({
         title: req.body.title,
         description: req.body.description,
-        author: req.payload.id,
-        dateCreated: req.payload.dateCreated,
-        completed: req.payload.completed,
-        dateCompleted: req.payload.dateCompleted
+        author: req.body.author,
+        dateCreated: req.body.dateCreated,
+        completed: req.body.completed,
+        dateCompleted: req.body.dateCompleted
     });
     await todo
         .save()
@@ -98,25 +99,49 @@ router.post("/", async function (req, res) {
             });
         })
         .catch((error) => {
+            console.log(error.message)
             return res.status(500).json({ error: error.message });
         });
 });
 
 router.get("/", async function (req, resp, next) {
+    console.log("HIT : GET_TODOS : " + JSON.stringify(req.body));
     Todo
         .find()
         .where("author").equals(req.payload.id)
         .then(
             (todos) => {
+                console.log("RETURN : GET_TODOS : " + JSON.stringify(todos));
                 return resp.status(200).json(todos);
             }
         )
         .catch(
             (error) => {
+                console.log("RETURN : GET_TODOS : ERROR - %s", error.message)
                 return resp.status(500).json({error: error.message});
             }
         );
 });
+
+
+router.delete("/:id", async function (req, resp) {
+    console.log("HIT : DELETE_TODO : (%s) : (%s)", JSON.stringify(req.body), JSON.stringify(req.params));
+    Todo
+        .findByIdAndDelete(req.params.id)
+        .where("author").equals(req.payload.id)
+        .then(
+            (deletedTodo) => {
+                console.log("RETURN : DELETE_TODO : Deleted data (%s)", JSON.stringify(deletedTodo));
+                return resp.status(200).json(deletedTodo)
+            }
+        )
+        .catch(
+            (error) => {
+                console.log("RETURN : DELETE_TODO : ERROR - %s", error.message);
+                return resp.status(500).json({error: error.message});
+            }
+        );
+})
 
 
 // router.get("/", async function (req, res, next) {

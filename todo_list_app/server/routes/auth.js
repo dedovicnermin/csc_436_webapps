@@ -101,6 +101,7 @@ router.post("/login", async function (req, res, next) {
             .equals(req.body.email)
             .exec();
         if (user) {
+            console.log(JSON.stringify(user))
             return bcrypt
                 .compare(req.body.password, user.password)
                 .then((result) => {
@@ -108,7 +109,7 @@ router.post("/login", async function (req, res, next) {
                         const token = jwt.sign({ id: user._id }, privateKey, {
                             algorithm: "RS256",
                         });
-                        return res.status(200).json({ access_token: token });
+                        return res.status(200).json({ access_token: token, id: user._id });
                     } else {
                         return res.status(401).json({ error: "Invalid credentials." });
                     }
