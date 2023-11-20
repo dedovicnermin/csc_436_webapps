@@ -1,14 +1,20 @@
 import {Button, Container} from "react-bootstrap";
 import {TODO_EVENTS} from "../AppReducer";
 import {useResource} from "react-request-hook";
+import {useContext} from "react";
+import {StateContext} from "../context";
 
 export default function Todo({todo, dispatch}) {
+
+    const {state, dpatch } = useContext(StateContext);
+    const { user } = state;
 
     const [todoResult, updateTodo] = useResource(
         ({id, title, description, author, dateCreated, completed, dateCompleted}) => (
             {
                 url: "/todos/" + id,
                 method: "put",
+                headers: { Authorization: `${user.access_token}` },
                 data: {
                     id,
                     title,
@@ -23,9 +29,10 @@ export default function Todo({todo, dispatch}) {
     );
 
     const [deletedTodo, deleteTodo] = useResource(
-        ({id, title, description, author, dateCreated, completed, dateCompleted}) => ({
-            url: "/todos/" + id,
-            method: "delete"
+        ({_id, title, description, author, dateCreated, completed, dateCompleted}) => ({
+            url: "/todos/" + _id,
+            method: "delete",
+            headers: { Authorization: `${user.access_token}` }
         })
     )
 
@@ -46,6 +53,7 @@ export default function Todo({todo, dispatch}) {
     }
     const handleDelete = event => {
         event.preventDefault()
+        console.log("handleDelete() : todo - (%s) - before backend persistence", todo);
         deleteTodo({...todo})
         dispatch({
             type: TODO_EVENTS.DELETE_TODO,
@@ -60,7 +68,7 @@ export default function Todo({todo, dispatch}) {
             <Container className="todo_left">
                 <Container className="todo-header">
                     <h3>{todo.title}</h3>
-                    <i>Written by <b>{todo.author}</b></i>
+                    <i>Written by <b>{user.email}</b></i>
                     <div>
                         <span> Create date: {todo.dateCreated} </span>
                     </div>

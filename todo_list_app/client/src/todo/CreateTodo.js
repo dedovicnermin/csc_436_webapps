@@ -14,11 +14,12 @@ export default function CreateTodo() {
         ({title, description, author, dateCreated, completed, dateCompleted}) => ({
         url: "/todos",
         method: "post",
+        headers: { Authorization: `${user.access_token}` },
         data: {title, description, author, dateCreated, completed, dateCompleted}
     }));
 
     useEffect(() => {
-        if (todo && todo.data) {
+        if (todo && todo.data && todo.isLoading === false) {
             dispatch({
                 type: TODO_EVENTS.CREATE_TODO,
                 payload: {...todo.data}
@@ -31,10 +32,11 @@ export default function CreateTodo() {
     const isDisabled = !title || !description;
     const localDateString = () => new Date(Date.now()).toLocaleDateString();
     const createTodo = () => {
+        console.log(JSON.stringify(user))
         return {
             title: title,
             description: description,
-            author: user,
+            author: user.id,
             dateCreated: localDateString(),
             completed: false,
             dateCompleted: null
@@ -55,7 +57,7 @@ export default function CreateTodo() {
         <Form onSubmit={handleCreate}>
             <Form.Group className="mb-3" controlId="create-todo-author">
                 <Form.Label>Author: </Form.Label>
-                <Form.Control plaintext readOnly as="text" value={user}>{user}</Form.Control>
+                <Form.Control plaintext readOnly as="text" value={user.email}>{user.email}</Form.Control>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="create-todo-title">

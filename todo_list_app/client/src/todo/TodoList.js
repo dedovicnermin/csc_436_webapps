@@ -13,14 +13,18 @@ export default function TodoList () {
     return (
         <Container className="todo-list">
             {
-                state.user &&
+                state.user?.email &&
                 <Container className="todo-list_create-todo">
                     <CreateTodo  />
                 </Container>
             }
             <Container className="todo-list_todos">
                 {
-                    todos.map((todo) => (
+                    todos?.length === 0 &&
+                    <span>NONE FOUND - CREATE YOUR FIRST!</span>
+                }
+                {
+                    todos?.length > 0 && todos.map((todo) => (
                         <Container key={todo.id} className="todo-list_todos_item">
                             <Todo todo={todo} dispatch={todoDispatch}/>
                         </Container>

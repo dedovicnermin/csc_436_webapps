@@ -4,18 +4,12 @@ import {USER_EVENTS} from "../AppReducer";
 import {useResource} from "react-request-hook";
 
 export default function Register({dispatchUser}) {
-
+    const [status, setStatus] = useState("")
     const [user, register] = useResource((username, password) => ({
-        url: "/users",
+        url: "/auth/register",
         method: "post",
-        data: { email: username, password },
+        data: { email: username, password, passwordConfirmation: password },
     }));
-
-    useEffect(() => {
-        if (user && user.data) {
-            dispatchUser({ type: USER_EVENTS.REGISTER, payload: user.data.user.email });
-        }
-    }, [user, dispatchUser]);
 
     const [formData, setFormData] = useState({
         username: "",
@@ -24,10 +18,38 @@ export default function Register({dispatchUser}) {
     });
 
 
+    useEffect(() => {
+        if (user && user.isLoading === false && (user.data || user.error)) {
+            console.log("Register.js user.data: " + user.data)
+            if (user.error) {
+                console.log("Register.js error with registration: " + user.error)
+                setStatus("Registration failed, please try again later.");
+            } else {
+                dispatchUser({
+                    type: USER_EVENTS.REGISTER,
+                    payload: {
+                        email: formData.username,
+                        id: user.data?.id
+                    }
+                })
+                setStatus("Registration successful. You may now login.");
+
+            }
+        }
+    }, [user]);
+
+    // useEffect(() => {
+    //     if (user && user.isLoading) {
+    //         dispatchUser({ type: USER_EVENTS.REGISTER, payload: user.data.user.email });
+    //     }
+    // }, [user, dispatchUser]);
+
+
+
     function handleSubmit(event, user) {
         event.preventDefault();
         register(formData.username, formData.password)
-        dispatchUser({type: USER_EVENTS.REGISTER, payload:  user})
+        // dispatchUser({type: USER_EVENTS.REGISTER, payload:  user})
     }
 
     const handleUsernameChange = event => setFormData({...formData, username: event.target.value});
@@ -76,6 +98,7 @@ export default function Register({dispatchUser}) {
                     Register
                 </Button>
             </Form>
+            {status && <p>{status}</p>}
         </Container>
     );
 }

@@ -12,18 +12,28 @@ export default function Login() {
     const {state, dispatch: dispatchUser} = useContext(StateContext);
 
     const [user, login] = useResource((username, password) => ({
-        url: "/login",
+        url: "/auth/login",
         method: "post",
         data: { email: username, password },
     }));
 
     useEffect(() => {
-        if (user) {
-            if (user?.data?.user) {
-                setLoginFailed(false);
-                dispatchUser({ type: USER_EVENTS.LOGIN, payload: user.data.user.email });
-            } else {
+        if (user && user.isLoading === false && (user.data || user.error)) {
+            console.log(JSON.stringify(user.data))
+            if (user.error) {
                 setLoginFailed(true);
+            } else {
+                setLoginFailed(false);
+                dispatchUser(
+                    {
+                        type: USER_EVENTS.LOGIN,
+                        payload: {
+                            email: username,
+                            access_token: user.data?.access_token,
+                            id: user.data?.id
+                        }
+                    }
+                );
             }
         }
     }, [user]);
@@ -35,10 +45,6 @@ export default function Login() {
     const handleSubmit = event => {
         event.preventDefault();
         login(username, password)
-        // dispatch({
-        //     type: USER_EVENTS.LOGIN,
-        //     payload: username
-        // });
     }
 
 
@@ -59,6 +65,9 @@ export default function Login() {
                     Login
                 </Button>
             </Form>
+            {loginFailed && (
+                <span style={{ color: "red" }}>Invalid username or password</span>
+            )}
         </Container>
     );
 }
