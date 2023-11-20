@@ -76,7 +76,7 @@ router.use(function (req, resp, next) {
 
 
 router.post("/", async function (req, res) {
-    console.log(JSON.stringify(req.body));
+    console.log("HIT : CREATE_TODO : %s", JSON.stringify(req.body));
     const todo = new Todo({
         title: req.body.title,
         description: req.body.description,
@@ -88,10 +88,11 @@ router.post("/", async function (req, res) {
     await todo
         .save()
         .then((savedTodo) => {
+            console.log("RETURN : CREATE_TODO : savedTodo (%s)", JSON.stringify({id: savedTodo._id, title: savedTodo.title, description: savedTodo.description, author: savedTodo.author, dateCreated: savedTodo.dateCreated, completed: savedTodo.completed, dateCompleted: savedTodo.dateCompleted }));
             return res.status(201).json({
                 id: savedTodo._id,
                 title: savedTodo.title,
-                content: savedTodo.description,
+                description: savedTodo.description,
                 author: savedTodo.author,
                 dateCreated: savedTodo.dateCreated,
                 completed: savedTodo.completed,
@@ -99,7 +100,7 @@ router.post("/", async function (req, res) {
             });
         })
         .catch((error) => {
-            console.log(error.message)
+            console.log("RETURN : CREATE_TODO : ERROR - %s",error.message);
             return res.status(500).json({ error: error.message });
         });
 });
@@ -141,7 +142,27 @@ router.delete("/:id", async function (req, resp) {
                 return resp.status(500).json({error: error.message});
             }
         );
-})
+});
+
+
+router.put("/:id", async function (req, resp) {
+   console.log("HIT : UPDATE_TODO : Body (%s) : ReqParams (%s)", JSON.stringify(req.body), JSON.stringify(req.params));
+   Todo
+       .findByIdAndUpdate(req.params.id, req.body)
+       .where("author").equals(req.payload.id)
+       .then(
+           (todoUpdate) => {
+               console.log("RETURN : UPDATE_TODO : Data (%s)", JSON.stringify(todoUpdate))
+               return resp.status(200).json(todoUpdate);
+           }
+       )
+       .catch(
+           (error) => {
+               console.log("RETURN : UPDATE_TODO : ERROR - %s", error.message);
+               return resp.status(500).json({error: error.message});
+           }
+       );
+});
 
 
 // router.get("/", async function (req, res, next) {

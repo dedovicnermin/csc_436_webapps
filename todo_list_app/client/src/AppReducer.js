@@ -30,7 +30,7 @@ function todoDispatch(todos, action) {
         case TODO_EVENTS.CREATE_TODO:
             return [action.payload, ...todos];
         case TODO_EVENTS.DELETE_TODO:
-            return todos.filter(todo => todo._id !== action.payload._id);
+            return todos.filter(todo => todo.id !== action.payload.id);
         case TODO_EVENTS.TOGGLE_COMPLETED:
             return todos.map(todo => {
                 if (todo.id === action.payload.id) {

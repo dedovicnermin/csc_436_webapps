@@ -29,8 +29,8 @@ export default function Todo({todo, dispatch}) {
     );
 
     const [deletedTodo, deleteTodo] = useResource(
-        ({_id, title, description, author, dateCreated, completed, dateCompleted}) => ({
-            url: "/todos/" + _id,
+        ({id, title, description, author, dateCreated, completed, dateCompleted}) => ({
+            url: "/todos/" + id,
             method: "delete",
             headers: { Authorization: `${user.access_token}` }
         })
@@ -43,6 +43,7 @@ export default function Todo({todo, dispatch}) {
             completed: !todo.completed,
             dateCompleted: !todo.completed ? localDateString() : null
         };
+        console.log("handleCompletedChange() : STATUS_OF_TODO : %s", JSON.stringify(todo));
         updateTodo({...update});
         dispatch({
             type: TODO_EVENTS.TOGGLE_COMPLETED,
