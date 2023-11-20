@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const Todo = require("../models/Todo");
 const privateKey = `
 -----BEGIN RSA PRIVATE KEY-----
 MIIJKQIBAAKCAgEA1lR6prjSWHfass8p1IYf3T74MSMO6dmM7gItd/3X0Js3A9HN
@@ -56,72 +55,76 @@ mRPkOMWx9t2rkBHm5gJtJeQ13/C2GcoUUdK0YlHS5D19CR8O6axv78y1LZm6iv6h
 J64vU1uXBeKyhOtFHnEeqUGgCgKwZUVtuc86r6WbE36bswO89/WcaQmpN3G/
 -----END RSA PRIVATE KEY-----
 `;
-const saltRounds = 10;
-router.use(function(req, res, next) {
-    bcrypt.genSalt(saltRounds, function(err, salt) {
-        bcrypt.hash(req.body.password, salt, function(err, hash) {
-            req.hashedPassword = hash;
-            next();
-        });
-    });
-});
 
-router.post("/register", async function (req, res, next) {
-    console.log(JSON.stringify(req.body))
-    if (req.body.email && req.body.password && req.body.passwordConfirmation) {
-        if (req.body.password === req.body.passwordConfirmation) {
-            const user = new User({
-                email: req.body.email,
-                password: req.hashedPassword,
+
+router.use(function (req, resp, next) {
+    if (req.header("Authorization")) {
+        try {
+            req.payload = jwt.verify(req.header("Authorization"), privateKey, {
+                algorithms: ["RS256"]
             });
-            return await user
-                .save()
-                .then((savedUser) => {
-                    console.log(JSON.stringify(savedUser));
-                    return res.status(201).json({
-                        id: savedUser._id,
-                        email: savedUser.email,
-                    });
-                })
-                .catch((error) => {
-                    return res.status(500).json({ error: error.message });
-                });
+            next();
+        } catch (error) {
+            return resp.status(401).json({error: error.message});
         }
-        res.status(400).json({ error: "Passwords not matching" });
     } else {
-        res.status(400).json({ error: "Username or Password Missing" });
+        return resp.status(401).json({error: "Authorization header missing."});
     }
 });
 
 
-router.post("/login", async function (req, res, next) {
-    if (req.body.email && req.body.password) {
-        const user = await User.findOne()
-            .where("email")
-            .equals(req.body.email)
-            .exec();
-        if (user) {
-            return bcrypt
-                .compare(req.body.password, user.password)
-                .then((result) => {
-                    if (result === true) {
-                        const token = jwt.sign({ id: user._id }, privateKey, {
-                            algorithm: "RS256",
-                        });
-                        return res.status(200).json({ access_token: token });
-                    } else {
-                        return res.status(401).json({ error: "Invalid credentials." });
-                    }
-                })
-                .catch((error) => {
-                    return res.status(500).json({ error: error.message });
-                });
-        }
-        return res.status(401).json({ error: "Invalid credentials." });
-    } else {
-        res.status(400).json({ error: "Username or Password Missing" });
-    }
+
+
+router.post("/", async function (req, res) {
+    const todo = new Todo({
+        title: req.body.title,
+        description: req.body.description,
+        author: req.payload.id,
+        dateCreated: req.payload.dateCreated,
+        completed: req.payload.completed,
+        dateCompleted: req.payload.dateCompleted
+    });
+    await todo
+        .save()
+        .then((savedTodo) => {
+            return res.status(201).json({
+                id: savedTodo._id,
+                title: savedTodo.title,
+                content: savedTodo.description,
+                author: savedTodo.author,
+                dateCreated: savedTodo.dateCreated,
+                completed: savedTodo.completed,
+                dateCompleted: savedTodo.dateCompleted
+            });
+        })
+        .catch((error) => {
+            return res.status(500).json({ error: error.message });
+        });
 });
 
+router.get("/", async function (req, resp, next) {
+    Todo
+        .find()
+        .where("author").equals(req.payload.id)
+        .then(
+            (todos) => {
+                return resp.status(200).json(todos);
+            }
+        )
+        .catch(
+            (error) => {
+                return resp.status(500).json({error: error.message});
+            }
+        );
+});
+
+
+// router.get("/", async function (req, res, next) {
+//     const todos = await Todo
+//         .find()
+//         .where("author").equals(req.payload.id)
+//         .exec();
+//     return res.status(200).json({ posts: todos });
+// });
 
 module.exports = router;

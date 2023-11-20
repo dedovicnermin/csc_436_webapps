@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const TodoSchema = new Schema(
     {
-        id: {type: Number, required: true, unique: true},
         title: { type: String, required: true},
         description: { type: String },
         author: {type: Schema.Types.ObjectId, ref: 'User'},
